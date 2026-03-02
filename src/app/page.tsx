@@ -4,9 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [copied, setCopied] = useState<string | null>(null);
   const [selectedPiece, setSelectedPiece] = useState<string>("[insert piece]");
-
   const [templateFile, setTemplateFile] = useState<string>("/chesstemplate.psd");
 
   const pieces = [
@@ -148,12 +146,6 @@ export default function Home() {
     },
   ];
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(text);
-    setTimeout(() => setCopied(null), 2000);
-  };
-
   return (
     <div className="min-h-screen text-black font-sans">
       <main className="w-full px-6 py-14 md:px-12">
@@ -280,42 +272,7 @@ export default function Home() {
               <span className="font-bold text-black block mb-2 -ml-2">
                 Background:
               </span>
-              To help these pieces sit together in a grid later, please use one of
-              these solid backgrounds:
-              <div className="mt-4 flex flex-col items-start gap-3">
-                <span
-                  className="px-2 py-1 text-white flex items-center gap-2"
-                  style={{ backgroundColor: "#67B346" }}
-                >
-                  Kelly Green
-                  <button
-                    onClick={() => handleCopy("#67B346")}
-                    className="hover:underline font-mono bg-black/20 px-1 rounded cursor-pointer"
-                    title="Click to copy hex"
-                  >
-                    #67B346
-                  </button>
-                  {copied === "#67B346" && (
-                    <span className="text-sm font-normal ml-1">Copied!</span>
-                  )}
-                </span>
-                <span
-                  className="px-2 py-1 text-black border-2 border-black flex items-center gap-2"
-                  style={{ backgroundColor: "#f5e6c1" }}
-                >
-                  Cream
-                  <button
-                    onClick={() => handleCopy("#f5e6c1")}
-                    className="hover:underline font-mono bg-black/10 px-1 rounded cursor-pointer"
-                    title="Click to copy hex"
-                  >
-                    #f5e6c1
-                  </button>
-                  {copied === "#f5e6c1" && (
-                    <span className="text-sm font-normal ml-1">Copied!</span>
-                  )}
-                </span>
-              </div>
+              To help these pieces sit together in a grid later, please use the background colors provided to you in the template.
             </li>
             <li className="leading-tight pl-2">
               <span className="font-bold text-black block mb-2 -ml-2">
