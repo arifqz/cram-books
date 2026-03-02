@@ -333,12 +333,6 @@ export default function Home() {
           <ul className="space-y-4 text-2xl text-gray-800 text-left list-disc pl-12">
             <li className="leading-tight pl-2">
               <span className="font-bold text-black block mb-2 -ml-2">
-                Can I submit more than one design?
-              </span>
-              Yes! We encourage you to submit multiple interpretations if you have them.
-            </li>
-            <li className="leading-tight pl-2">
-              <span className="font-bold text-black block mb-2 -ml-2">
                 What if I don&apos;t play chess?
               </span>
               No problem! You don&apos;t need to be a grandmaster to appreciate the aesthetics of the pieces.
