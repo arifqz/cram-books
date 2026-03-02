@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
@@ -9,12 +9,33 @@ export default function Home() {
 
   const pieces = [
     "pawn",
-    "rook",
+    "castle",
     "knight",
     "bishop",
     "queen",
     "king",
   ];
+
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "").toLowerCase();
+    if (pieces.includes(hash)) {
+      setSelectedPiece(hash);
+    }
+  }, []);
+
+  const updatePiece = (piece: string) => {
+    setSelectedPiece(piece);
+    window.location.hash = piece;
+  };
+
+  const pieceDescriptions: Record<string, string> = {
+    pawn: "The Pawn, commonly known as the Foot Soldier, is the most numerous piece on the chessboard. It is visually depicted as a simple, rounded sphere atop a slender neck and a flared base, representing the helmeted head of an unmounted infantryman. Unlike any other piece, the Pawn moves forward one square at a time, but it captures diagonally and has the unique ability to move two squares on its initial turn. Despite being the least powerful individual unit, its ability to act as a defensive shield and its potential to promote into a more powerful piece upon reaching the final rank makes it the foundational soul of chess strategy.",
+    castle: "The Rook, commonly known as the Castle, is the heavy artillery of the chessboard. It is visually depicted as a fortified stone tower with a flared base and crenellated battlements featuring the notched teeth used by archers for cover. Representing an immovable defensive bastion, the piece moves in uninterrupted straight lines either horizontally or vertically across any number of vacant squares. While it cannot move diagonally or jump over obstacles, its unlimited linear range makes it a crushing force that dominates open files and ranks.",
+    knight: "The Knight, commonly known as the Horse, is the most unique piece on the chessboard. It is visually depicted as the bust of a stallion, often featuring a carved mane and a proud, arched neck to represent a cavalry mount. Unlike any other piece, the Knight moves in an \"L\" shape, leaping over occupied squares to land two spaces in one cardinal direction and one space perpendicular to it. Because its movement is the only one that can jump over obstacles, it is an essential tactical tool for navigating crowded boards and launching unpredictable attacks.",
+    bishop: "The Bishop is the diagonal specialist of the chessboard, representing a high-ranking ecclesiastical official or counselor. It is visually depicted as a tall, slender pillar topped with a mitre, which is a ceremonial headdress featuring a deep, vertical cleft or notch. The name \"Bishop\" reflects the piece's status within the medieval social hierarchy, aligning the game with the power structures of the church and state. The piece moves in uninterrupted diagonal lines across any number of vacant squares, provided its path is not blocked. Because it is forever restricted to the color of the square on which it began the game, it serves as a long-range tactical tool for controlling specific color complexes.",
+    queen: "The Queen is the most powerful piece on the chessboard, representing the sovereign’s most influential advisor and protector. It is visually depicted as a tall, elegant pillar topped with a coronet or a series of small spheres to distinguish it from the King’s cross. The name Queen reflects the piece's evolution into a versatile and dominant force within the medieval social hierarchy. The Queen combines the movements of the Rook and the Bishop, traveling in uninterrupted straight lines horizontally, vertically, or diagonally across any number of vacant squares. This unlimited range in all directions makes it the most dangerous offensive weapon on the board.",
+    king: "The King is the most important piece on the chessboard, representing the monarch and the ultimate objective of the game. It is visually depicted as the tallest piece on the board, featuring a stout, regal pillar topped with a cross or a crown to signify supreme authority. The name King is derived from the Old Persian Shah, reflecting the piece’s status as the heart of the kingdom. The King moves one square in any direction, horizontally, vertically, or diagonally, making it a slow but versatile unit. While it has limited range, its safety is the primary concern of every move, as the game ends immediately once the King is trapped in checkmate.",
+  };
 
   const dontsImages = [
     {
@@ -106,7 +127,7 @@ export default function Home() {
                 {pieces.map((piece) => (
                   <button
                     key={piece}
-                    onClick={() => setSelectedPiece(piece)}
+                    onClick={() => updatePiece(piece)}
                     className={`px-3 py-2 border-2 border-black text-sm font-bold uppercase transition-colors
                       ${
                         selectedPiece === piece
@@ -135,6 +156,34 @@ export default function Home() {
             goal is to see how you understand the essence of{" "}
             <span className="bg-black text-white px-2 py-1">{selectedPiece}</span>
           </p>
+        </section>
+
+        {/* Section: Your Piece & Template */}
+        <section className="mb-8 max-w-[90vw]">
+          <div className="bg-black text-white p-8">
+            <h2 className="text-3xl font-semibold mb-6 uppercase tracking-wider text-white border-b-2 border-[#f5e6c1] pb-0 text-left leading-none w-full">
+              <span className="bg-black text-white px-0 py-1 normal-case">{selectedPiece}</span>
+            </h2>
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="flex-1">
+                <p className="text-2xl leading-tight text-white text-left mb-6">
+                  {selectedPiece === "[insert piece]" 
+                    ? "This is where your creativity takes the lead. Whether you choose to depict a stoic pawn, a regal queen, or a charging knight, let your illustration tell a story. Consider the piece's movement, history, or symbolic meaning in your design."
+                    : pieceDescriptions[selectedPiece]
+                  }
+                </p>
+              </div>
+              <div className="shrink-0">
+                <a 
+                  href="/chesstemplate.psd" 
+                  download
+                  className="inline-block bg-black text-white text-xl font-bold px-8 py-4 uppercase tracking-wide border-2 border-[#f5e6c1] hover:bg-gray-900 transition-colors"
+                >
+                  Download Template
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Section: Guidelines */}
