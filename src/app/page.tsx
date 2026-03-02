@@ -20,6 +20,8 @@ export default function Home() {
     const hash = window.location.hash.replace("#", "").toLowerCase();
     if (pieces.includes(hash)) {
       setSelectedPiece(hash);
+    } else if (hash === "showall") {
+      setSelectedPiece("showall");
     }
   }, []);
 
@@ -35,6 +37,15 @@ export default function Home() {
     bishop: "The Bishop is the diagonal specialist of the chessboard, representing a high-ranking ecclesiastical official or counselor. It is visually depicted as a tall, slender pillar topped with a mitre, which is a ceremonial headdress featuring a deep, vertical cleft or notch. The name \"Bishop\" reflects the piece's status within the medieval social hierarchy, aligning the game with the power structures of the church and state. The piece moves in uninterrupted diagonal lines across any number of vacant squares, provided its path is not blocked. Because it is forever restricted to the color of the square on which it began the game, it serves as a long-range tactical tool for controlling specific color complexes.",
     queen: "The Queen is the most powerful piece on the chessboard, representing the sovereign’s most influential advisor and protector. It is visually depicted as a tall, elegant pillar topped with a coronet or a series of small spheres to distinguish its rank. The name Queen reflects the evolution of the piece into a versatile and dominant force within the medieval social hierarchy. The Queen travels in uninterrupted straight lines horizontally, vertically, or diagonally across any number of vacant squares. This unlimited range in all directions makes it the most dangerous offensive weapon on the board.",
     king: "The King is the most important piece on the chessboard, representing the monarch and the ultimate objective of the game. It is visually depicted as the tallest piece on the board, featuring a stout, regal pillar topped with a cross or a crown to signify supreme authority. The name King reflects the status of the piece as the heart of the kingdom. The King moves one square in any direction, horizontally, vertically, or diagonally, making it a slow but versatile unit. While it has limited range, its safety is the primary concern of every move, as the game ends immediately once the King is trapped in checkmate.",
+  };
+
+  const pieceImages: Record<string, string> = {
+    pawn: "/pieces/_0003_pawn.png",
+    castle: "/pieces/_0004_castle.png",
+    knight: "/pieces/_0001_knight.png",
+    bishop: "/pieces/_0000_bishop.png",
+    queen: "/pieces/_0002_queen.png",
+    king: "/pieces/_0005_king.png",
   };
 
   const dontsImages = [
@@ -108,7 +119,7 @@ export default function Home() {
     <div className="min-h-screen text-black font-sans">
       <main className="w-full px-6 py-14 md:px-12">
         {/* Header Title */}
-        <header className="mb-8">
+        <header className="mb-12 relative">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
             <div>
               <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-left mb-2">
@@ -119,26 +130,51 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="flex flex-col gap-2">
-              <span className="text-sm font-semibold uppercase tracking-wider text-gray-500 md:text-right">
-                Select Your Piece
-              </span>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="absolute -top-8 right-0 hidden md:block">
+              <div className="flex flex-wrap gap-0 justify-end">
                 {pieces.map((piece) => (
                   <button
                     key={piece}
                     onClick={() => updatePiece(piece)}
-                    className={`px-3 py-2 border-2 border-black text-sm font-bold uppercase transition-colors
-                      ${
-                        selectedPiece === piece
-                          ? "bg-black text-white"
-                          : "bg-white text-black hover:bg-gray-100"
+                    className={`relative w-52 h-52 transition-all duration-200 -ml-32 first:ml-0
+                      ${selectedPiece === piece || selectedPiece === "showall"
+                        ? "opacity-100 scale-110 z-10" 
+                        : "hidden"
                       }`}
+                    title={piece.charAt(0).toUpperCase() + piece.slice(1)}
                   >
-                    {piece}
+                    <Image
+                      src={pieceImages[piece]}
+                      alt={piece}
+                      fill
+                      className="object-contain"
+                    />
                   </button>
                 ))}
               </div>
+            </div>
+            
+            {/* Mobile view for pieces */}
+            <div className="md:hidden flex flex-wrap gap-0 justify-center w-full mt-4">
+              {pieces.map((piece) => (
+                <button
+                  key={piece}
+                  onClick={() => updatePiece(piece)}
+                  className={`relative w-20 h-20 transition-all duration-200 -ml-12 first:ml-0
+                    ${selectedPiece === piece || selectedPiece === "showall"
+                      ? "opacity-100 scale-110 z-10" 
+                      : "hidden"
+                    }`}
+                  title={piece.charAt(0).toUpperCase() + piece.slice(1)}
+                >
+                  <Image
+                    src={pieceImages[piece]}
+                    alt={piece}
+                    fill
+                    className="object-contain"
+                  />
+                </button>
+              ))}
             </div>
           </div>
         </header>
