@@ -302,11 +302,9 @@ export default function Home() {
           <ul className="space-y-4 text-2xl text-gray-800 text-left list-disc pl-12">
             <li className="leading-tight pl-2">
               <span className="font-bold text-black block mb-2 -ml-2">
-                Line Weight:
+                Dimensions:
               </span>
-              Avoid extremely fine lines or hyper-detailed textures, as these
-              may not translate well or could result in data loss during the
-              Riso process.
+              10inches by 10inches (3000px by 3000px at 300dpi) (as per the provided template).
             </li>
             <li className="leading-tight pl-2">
               <span className="font-bold text-black block mb-2 -ml-2">
@@ -318,9 +316,11 @@ export default function Home() {
             </li>
             <li className="leading-tight pl-2">
               <span className="font-bold text-black block mb-2 -ml-2">
-                Dimensions:
+                Level of Detail:
               </span>
-              10inches by 10inches (3000px by 3000px at 300dpi) (as per the provided template).
+              Avoid extremely fine lines or hyper-detailed textures, as these
+              may not translate well or could result in data loss during the
+              Riso process.
             </li>
           </ul>
         </section>
