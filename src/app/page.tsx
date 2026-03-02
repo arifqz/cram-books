@@ -7,6 +7,8 @@ export default function Home() {
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedPiece, setSelectedPiece] = useState<string>("[insert piece]");
 
+  const [templateFile, setTemplateFile] = useState<string>("/chesstemplate.psd");
+
   const pieces = [
     "pawn",
     "castle",
@@ -16,18 +18,55 @@ export default function Home() {
     "king",
   ];
 
+  const pieceAssignments: Record<string, { piece: string, template: "light" | "dark" }> = {
+    // White Pieces (Bottom Rank)
+    "e2lightbg": { piece: "pawn", template: "light" },
+    "a1darkbg": { piece: "castle", template: "dark" },
+    "b1lightbg": { piece: "knight", template: "light" },
+    "c1darkbg": { piece: "bishop", template: "dark" },
+    "d1lightbg": { piece: "queen", template: "light" },
+    "e1darkbg": { piece: "king", template: "dark" },
+    
+    // Black Pieces (Top Rank)
+    "e7darkbg": { piece: "pawn", template: "dark" },
+    "a8lightbg": { piece: "castle", template: "light" },
+    "b8darkbg": { piece: "knight", template: "dark" },
+    "c8lightbg": { piece: "bishop", template: "light" },
+    "d8darkbg": { piece: "queen", template: "dark" },
+    "e8lightbg": { piece: "king", template: "light" },
+  };
+
   useEffect(() => {
     const hash = window.location.hash.replace("#", "").toLowerCase();
-    if (pieces.includes(hash)) {
-      setSelectedPiece(hash);
-    } else if (hash === "showall") {
+    
+    if (hash === "showall") {
       setSelectedPiece("showall");
+    } else if (pieces.includes(hash)) {
+      // Legacy support or direct piece access if needed (or disable if strict)
+      // For now keeping it but default template
+      setSelectedPiece(hash);
+    } else if (pieceAssignments[hash]) {
+      const assignment = pieceAssignments[hash];
+      setSelectedPiece(assignment.piece);
+      setTemplateFile(assignment.template === "light" ? "/chesstemplate_light.psd" : "/chesstemplate_dark.psd");
     }
   }, []);
 
   const updatePiece = (piece: string) => {
+    // If using the selector (admin/showall mode), default template?
+    // Or maybe keep current template?
+    // For simplicity, default to generic or light if switched manually
     setSelectedPiece(piece);
-    window.location.hash = piece;
+    window.location.hash = piece; 
+  };
+
+  // Helper to check if we are in a specific assignment mode (to hide selector)
+  const isAssignmentMode = () => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace("#", "").toLowerCase();
+      return !!pieceAssignments[hash];
+    }
+    return false;
   };
 
   const pieceDescriptions: Record<string, string> = {
@@ -130,7 +169,7 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="absolute -top-8 right-0 hidden md:block">
+            <div className={`absolute -top-8 right-0 hidden md:block ${isAssignmentMode() ? 'hidden md:hidden' : ''}`}>
               <div className="flex flex-wrap gap-0 justify-end">
                 {pieces.map((piece) => (
                   <button
@@ -155,7 +194,7 @@ export default function Home() {
             </div>
             
             {/* Mobile view for pieces */}
-            <div className="md:hidden flex flex-wrap gap-0 justify-center w-full mt-4">
+            <div className={`md:hidden flex flex-wrap gap-0 justify-center w-full mt-4 ${isAssignmentMode() ? 'hidden' : ''}`}>
               {pieces.map((piece) => (
                 <button
                   key={piece}
@@ -211,7 +250,7 @@ export default function Home() {
               </div>
               <div className="shrink-0">
                 <a 
-                  href="/chesstemplate.psd" 
+                  href={templateFile}
                   download
                   className="inline-block bg-black text-white text-xl font-bold px-8 py-4 uppercase tracking-wide border-2 border-[#f5e6c1] hover:bg-gray-900 transition-colors"
                 >
