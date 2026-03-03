@@ -186,14 +186,14 @@ export default function Home() {
             </div>
             
             {/* Mobile view for pieces */}
-            <div className={`md:hidden flex flex-wrap gap-0 justify-center w-full mt-4 ${isAssignmentMode() ? 'hidden' : ''}`}>
+            <div className={`md:hidden absolute top-0 right-0 ${isAssignmentMode() ? 'hidden' : ''}`}>
               {pieces.map((piece) => (
                 <button
                   key={piece}
                   onClick={() => updatePiece(piece)}
-                  className={`relative w-20 h-20 transition-all duration-200 -ml-12 first:ml-0
+                  className={`relative w-20 h-20 transition-all duration-200
                     ${selectedPiece === piece || selectedPiece === "showall"
-                      ? "opacity-100 scale-110 z-10" 
+                      ? "opacity-100 z-10" 
                       : "hidden"
                     }`}
                   title={piece.charAt(0).toUpperCase() + piece.slice(1)}
@@ -231,7 +231,7 @@ export default function Home() {
             <h2 className="text-3xl font-semibold mb-6 uppercase tracking-wider text-white border-b-2 border-[#f5e6c1] pb-0 text-left leading-none w-full">
               <span className="bg-black text-white px-0 py-1 normal-case">{selectedPiece}</span>
             </h2>
-            <div className="flex flex-col md:flex-row gap-8 items-start">
+            <div className="flex flex-col-reverse md:flex-row gap-8 items-start">
               <div className="flex-1">
                 <p className="text-2xl leading-tight text-white text-left mb-6">
                   {selectedPiece === "[insert piece]" 
